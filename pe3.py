@@ -25,18 +25,45 @@ def decode(text, shift):
         decoded_text += decoded_char
     return decoded_text
 
-
 class BankAccount:
     def __init__(self, name, ID, creation_date, balance):
-        self.name == name
-        self.ID == ID
-        self.creation_date == datetime.date(creation_date)
-        self.balance == balance
+        if creation_date > datetime.date.today():
+            raise Exception("Invalid creation date, must be present or past date")
+        
+        self.name = name
+        self.ID = ID
+        self.creation_date = creation_date
+        self.balance = balance
 
-
-    def withdrawal (self, amount):
+    def withdraw(self, amount):
 	    self.balance -= amount
-                
-    def deposit (self, amount):
+        
+    def deposit(self, amount):
 	    self.balance += amount
+
+    def view_balance(self):
+	    return self.balance
             
+class SavingsAccount(BankAccount):
+    def __init__(self, name, ID, creation_date, balance):
+        super().__init__(name, ID, creation_date, balance)
+        self.waiting_period = creation_date + datetime.timedelta(days=180)
+
+    def withdraw(self, amount):
+        if datetime.date.today() < self.waiting_period:
+            print("Unable to withdraw money due to the six month waiting period after account creation.")
+        else:
+            if amount <= self.balance:
+                super().withdraw(amount)
+            else: 
+                print("Unable to overdraft, the maximum withdraw amount for your account is:")
+                return super().view_balance()
+
+class CheckingAccount(BankAccount):
+    def __init__(self, name, ID, creation_date, balance):
+         super().__init__(name, ID, creation_date, balance)
+    
+    def withdraw(self, amount):
+        if self.balance < amount:
+            self.balance -= 30 # penalty fee
+        super().withdraw(amount)
