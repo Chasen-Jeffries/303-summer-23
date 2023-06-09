@@ -1,3 +1,6 @@
+import datetime
+
+
 def encode (input_text, shift):
     alphabet = [chr(ord('a') + i) for i in range(26)]
     encoded_text = ""
@@ -21,3 +24,19 @@ def decode(text, shift):
             decoded_char = char
         decoded_text += decoded_char
     return decoded_text
+
+
+class BankAccount:
+    def __init__(self, name, ID, creation_date, balance):
+        self.name == name
+        self.ID == ID
+        self.creation_date == datetime.date(creation_date)
+        self.balance == balance
+
+
+    def withdrawal (self, amount):
+	    self.balance -= amount
+                
+    def deposit (self, amount):
+	    self.balance += amount
+            
