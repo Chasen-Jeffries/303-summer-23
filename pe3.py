@@ -36,13 +36,13 @@ class BankAccount:
         self.balance = balance
 
     def withdraw(self, amount):
-        if amount > 0:
+        if self.balance <= amount:
             self.balance -= amount
         else:
-            print('You must select a postive number as your withdraw amount')
+            print('You have insufficient funds')
 
     def deposit(self, amount):
-        if amount > 0:
+        if amount >= 0:
             self.balance += amount
         else:
             print('You must select a postive number as your deposit amount')
@@ -59,16 +59,24 @@ class SavingsAccount(BankAccount):
         if datetime.date.today() < self.waiting_period:
             raise Exception("Unable to withdraw money due to the six month waiting period after account creation.")
         else:
-            if amount <= self.balance:
-                super().withdraw(amount)
-            else: 
-                raise Exception("Unable to withdraw due to overdraft")
-
+            if amount >= 0:
+                if amount <= self.balance:
+                    self.balance -= amount
+                else: 
+                    raise Exception("Unable to withdraw due to overdraft (insufficient funds)")
+            else:
+                raise Exception("You must select a positive number as your withdraw amount")
+            
 class CheckingAccount(BankAccount):
     def __init__(self, name, ID, creation_date, balance):
          super().__init__(name, ID, creation_date, balance)
     
     def withdraw(self, amount):
-        if self.balance < amount:
-            self.balance -= 30 # penalty fee
-        super().withdraw(amount)
+        if amount >= 0:
+            if self.balance >= amount:
+                self.balance -= amount
+            else:    
+                self.balance -= 30 # penalty fee
+                print("insufficient funds, overdraft fee applied")            
+        else:
+            print("You must select a positive number as your withdraw amount")
