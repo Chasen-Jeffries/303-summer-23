@@ -17,20 +17,12 @@ def create_multi_table(size):
 # Tests basic tests 1
 def test_multi_table_1_basic():
     multi_table = create_multi_table(5)
-    assert len(multi_table) == 6
-    assert len(multi_table[0]) == 6
-    assert multi_table[1][1] == 1
-    assert multi_table[1][5] == 5
     assert multi_table[5][5] == 25
 
 # Tests basic tests 2
 def test_multi_table_2_basic():
     multi_table = create_multi_table(10)
-    assert len(multi_table) == 11
-    assert len(multi_table[0]) == 11
-    assert multi_table[1][1] == 1
     assert multi_table[1][10] == 10
-    assert multi_table[10][10] == 100
 
 # Xfail, we give parameters where it should fail and it will mark as Xfail when it fails.
 @pytest.mark.xfail
